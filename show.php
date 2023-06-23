@@ -1,20 +1,7 @@
 <?php 
-    try {
-        $pdo = new PDO ("mysql:dbname=school;host=localhost", "root", "admin");
-        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $statemanet = $pdo->prepare("SELECT * FROM `students` WHERE id=:id");
-        $statemanet->bindParam(":id", $_GET["id"]);
-        if($statemanet->execute())
-        {
-            $student = $statemanet->fetch(PDO::FETCH_OBJ);
-        } else {
-            header("Location: http://localhost:8000/");
-        }
-    } catch (PDOException $e) {
-        echo $e->getMessage();
-    } catch (Exception $e) {
-        echo $e->getMessage();
-    }
+    require_once "./db.php";
+    $db = new DB();
+    $student = $db->show($_GET["id"]);
 ?>
 
 <!DOCTYPE html>
@@ -41,6 +28,7 @@
                 </ul>
                 <div class="py-5">
                     <a href="/" class="py-2 bg-gray-600 text-white px-5 text-lg rounded-md">Back</a>
+                    <a href="/edit.php?id=<?php echo $student->id; ?>" class="py-2 bg-yellow-600 text-white px-5 text-lg rounded-md">Edit</a>
                 </div>
             </div>
         </div>
